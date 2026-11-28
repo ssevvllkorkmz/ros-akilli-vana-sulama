@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>irrigation_bringup</name>
+  <version>0.1.0</version>
+  <description>Sistemin tamamını başlatan launch dosyaları ve parsel konfigürasyonu</description>
+  <maintainer email="ekip@example.com">Proje Ekibi</maintainer>
+  <license>MIT</license>
+  <buildtool_depend>catkin</buildtool_depend>
+  <exec_depend>irrigation_weather</exec_depend>
+  <exec_depend>irrigation_decision</exec_depend>
+  <exec_depend>irrigation_scheduler</exec_depend>
+  <exec_depend>valve_edge_node</exec_depend>
+  <exec_depend>irrigation_gazebo</exec_depend>
+  <exec_depend>irrigation_viz</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>rviz</exec_depend>
+</package>

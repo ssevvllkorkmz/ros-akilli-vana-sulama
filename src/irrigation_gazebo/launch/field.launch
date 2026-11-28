@@ -1,0 +1,12 @@
+<!-- Boş tarla dünyası + tek vana (Hafta 2 kabul testi):
+     rostopic pub /parcel_1/valve_position_controller/command std_msgs/Float64 "data: 1.047" -->
+<launch>
+  <arg name="gui" default="true"/>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find irrigation_gazebo)/worlds/field.world"/>
+    <arg name="gui" value="$(arg gui)"/>
+  </include>
+  <include file="$(find irrigation_gazebo)/launch/spawn_valve.launch">
+    <arg name="parcel" value="parcel_1"/>
+  </include>
+</launch>

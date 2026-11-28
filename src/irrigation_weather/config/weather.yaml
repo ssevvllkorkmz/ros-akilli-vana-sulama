@@ -1,0 +1,5 @@
+# weather_node parametreleri (örnek konum: Konya Ovası — kendi tarlanıza göre değiştirin)
+latitude: 37.8746
+longitude: 32.4932
+forecast_days: 7
+update_period_s: 3600.0

@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<!--
+  1-DOF motorlu kelebek vana makrosu.
+  valve_joint: dikey eksende döner, 0 rad = kapalı, pi/2 rad (90°) = tam açık.
+  Kullanım: <xacro:valve prefix="parcel_1_" parent="world" xyz="0 0 0"/>
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:property name="pipe_r" value="0.05"/>
+  <xacro:property name="pipe_len" value="0.40"/>
+  <xacro:property name="body_size" value="0.14"/>
+  <xacro:property name="disc_r" value="0.045"/>
+
+  <material name="pipe_blue"><color rgba="0.15 0.35 0.75 1"/></material>
+  <material name="body_grey"><color rgba="0.55 0.55 0.58 1"/></material>
+  <material name="actuator_black"><color rgba="0.1 0.1 0.1 1"/></material>
+  <material name="indicator_red"><color rgba="0.85 0.15 0.1 1"/></material>
+
+  <xacro:macro name="box_inertia" params="m x y z">
+    <inertia ixx="${m*(y*y+z*z)/12}" ixy="0" ixz="0"
+             iyy="${m*(x*x+z*z)/12}" iyz="0" izz="${m*(x*x+y*y)/12}"/>
+  </xacro:macro>
+
+  <xacro:macro name="valve" params="prefix parent xyz:='0 0 0' rpy:='0 0 0'">
+
+    <!-- Sabit gövde: boru + vana gövdesi + motor kutusu -->
+    <link name="${prefix}valve_body">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 ${pi/2} 0"/>
+        <geometry><cylinder radius="${pipe_r}" length="${pipe_len}"/></geometry>
+        <material name="pipe_blue"/>
+      </visual>
+      <visual>
+        <geometry><box size="${body_size} ${body_size} ${body_size}"/></geometry>
+        <material name="body_grey"/>
+      </visual>
+      <visual>
+        <origin xyz="0 0 ${body_size/2 + 0.05}"/>
+        <geometry><box size="0.10 0.10 0.10"/></geometry>
+        <material name="actuator_black"/>
+      </visual>
+      <collision>
+        <geometry><box size="${pipe_len} ${body_size} ${body_size}"/></geometry>
+      </collision>
+      <inertial>
+        <mass value="3.0"/>
+        <xacro:box_inertia m="3.0" x="${pipe_len}" y="${body_size}" z="${body_size}"/>
+      </inertial>
+    </link>
+
+    <joint name="${prefix}valve_mount" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${prefix}valve_body"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+
+    <!-- Hareketli disk + motor üstündeki açı göstergesi -->
+    <link name="${prefix}valve_disc">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 ${pi/2} 0"/>
+        <geometry><cylinder radius="${disc_r}" length="0.006"/></geometry>
+        <material name="body_grey"/>
+      </visual>
+      <visual>
+        <origin xyz="0 0.06 ${body_size/2 + 0.105}"/>
+        <geometry><box size="0.02 0.12 0.01"/></geometry>
+        <material name="indicator_red"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 ${pi/2} 0"/>
+        <geometry><cylinder radius="${disc_r}" length="0.006"/></geometry>
+      </collision>
+      <inertial>
+        <mass value="0.2"/>
+        <inertia ixx="1e-4" ixy="0" ixz="0" iyy="1e-4" iyz="0" izz="1e-4"/>
+      </inertial>
+    </link>
+
+    <joint name="${prefix}valve_joint" type="revolute">
+      <parent link="${prefix}valve_body"/>
+      <child link="${prefix}valve_disc"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="0.0" upper="${pi/2}" effort="20.0" velocity="0.8"/>
+      <dynamics damping="0.5" friction="0.1"/>
+    </joint>
+
+    <transmission name="${prefix}valve_transmission">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}valve_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${prefix}valve_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+    <gazebo reference="${prefix}valve_body"><material>Gazebo/Blue</material></gazebo>
+    <gazebo reference="${prefix}valve_disc"><material>Gazebo/Red</material></gazebo>
+  </xacro:macro>
+</robot>

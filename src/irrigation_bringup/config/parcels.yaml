@@ -1,0 +1,41 @@
+# Parsel tanımları — decision_node, scheduler_node ve viz bu dosyayı okur.
+# kc: bitki katsayısı (FAO-56, gelişme dönemine göre güncelleyin)
+# taw_mm: kök bölgesinde toplam alınabilir su, mad: izin verilen tükenme oranı (RAW = mad * taw)
+# max_flow_lpm: vana 90° açıkken debi [L/dk]
+pump_capacity_lpm: 120.0
+irrigation_window: {start: "05:00", end: "09:00"}   # buharlaşmanın düşük olduğu saatler
+effective_rain: {factor: 0.8, min_mm: 5.0}
+
+parcels:
+  - id: parcel_1
+    crop: domates
+    area_m2: 400
+    kc: 1.05
+    taw_mm: 60
+    mad: 0.40
+    max_flow_lpm: 60
+    position: {x: 0.0, y: 0.0}
+  - id: parcel_2
+    crop: misir
+    area_m2: 600
+    kc: 1.20
+    taw_mm: 90
+    mad: 0.55
+    max_flow_lpm: 80
+    position: {x: 2.0, y: 0.0}
+  - id: parcel_3
+    crop: biber
+    area_m2: 300
+    kc: 1.05
+    taw_mm: 50
+    mad: 0.30
+    max_flow_lpm: 45
+    position: {x: 0.0, y: 2.0}
+  - id: parcel_4
+    crop: seker_pancari
+    area_m2: 500
+    kc: 1.20
+    taw_mm: 110
+    mad: 0.55
+    max_flow_lpm: 70
+    position: {x: 2.0, y: 2.0}
