@@ -1,17 +1,22 @@
 # Parsel tanımları — decision_node, scheduler_node ve viz bu dosyayı okur.
-# kc: bitki katsayısı (FAO-56, gelişme dönemine göre güncelleyin)
-# taw_mm: kök bölgesinde toplam alınabilir su, mad: izin verilen tükenme oranı (RAW = mad * taw)
-# max_flow_lpm: vana 90° açıkken debi [L/dk]
+# Değerlerin kaynağı ve hesabı: docs/parsel_parametreleri.md (FAO-56, Allen vd. 1998)
+#   kc     : orta dönem bitki katsayısı (Tablo 12)
+#   mad    : su stresi başlamadan tüketilebilecek oran p (Tablo 22) -> RAW = mad * taw
+#   taw_mm : kök bölgesinde toplam alınabilir su = 1000 * (θFC - θWP) * Zr
+#            tın toprak için θFC - θWP = 0.14 m³/m³ kabulü, Zr = Tablo 22 alt sınırı
+#   max_flow_lpm: vana 90° açıkken debi [L/dk]
 pump_capacity_lpm: 120.0
 irrigation_window: {start: "05:00", end: "09:00"}   # buharlaşmanın düşük olduğu saatler
 effective_rain: {factor: 0.8, min_mm: 5.0}
+soil: {type: tin, available_water_m3_per_m3: 0.14}
 
 parcels:
   - id: parcel_1
     crop: domates
     area_m2: 400
-    kc: 1.05
-    taw_mm: 60
+    kc: 1.15
+    root_depth_m: 0.7
+    taw_mm: 98
     mad: 0.40
     max_flow_lpm: 60
     position: {x: 0.0, y: 0.0}
@@ -19,7 +24,8 @@ parcels:
     crop: misir
     area_m2: 600
     kc: 1.20
-    taw_mm: 90
+    root_depth_m: 1.0
+    taw_mm: 140
     mad: 0.55
     max_flow_lpm: 80
     position: {x: 2.0, y: 0.0}
@@ -27,7 +33,8 @@ parcels:
     crop: biber
     area_m2: 300
     kc: 1.05
-    taw_mm: 50
+    root_depth_m: 0.5
+    taw_mm: 70
     mad: 0.30
     max_flow_lpm: 45
     position: {x: 0.0, y: 2.0}
@@ -35,7 +42,8 @@ parcels:
     crop: seker_pancari
     area_m2: 500
     kc: 1.20
-    taw_mm: 110
+    root_depth_m: 0.7
+    taw_mm: 98
     mad: 0.55
     max_flow_lpm: 70
     position: {x: 2.0, y: 2.0}
