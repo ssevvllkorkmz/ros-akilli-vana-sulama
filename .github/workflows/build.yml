@@ -1,0 +1,35 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  catkin:
+    runs-on: ubuntu-latest
+    container: ros:noetic-ros-base
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: ws/src/ros-akilli-vana-sulama
+
+      - name: Bağımlılıkları kur
+        shell: bash
+        run: |
+          apt-get update
+          apt-get install -y python3-pytest python3-requests python3-yaml
+          rosdep update
+          cd ws && rosdep install --from-paths src --ignore-src -r -y
+
+      - name: catkin_make
+        shell: bash
+        run: |
+          source /opt/ros/noetic/setup.bash
+          cd ws && catkin_make
+
+      - name: Birim testleri (ROS'tan bağımsız modüller)
+        shell: bash
+        run: |
+          source /opt/ros/noetic/setup.bash
+          cd ws/src/ros-akilli-vana-sulama && python3 -m pytest src -q
