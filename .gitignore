@@ -1,8 +1,14 @@
 build/
 devel/
+install/
 logs/
+.catkin_workspace
 __pycache__/
 *.pyc
-*.pyo
+.pytest_cache/
+*.swp
 .vscode/
 .idea/
+# Open-Meteo çalışma zamanı önbelleği
+src/irrigation_weather/cache/
+*.pyo

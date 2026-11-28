@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>irrigation_decision</name>
+  <version>0.1.0</version>
+  <description>Hava tahminine dayalı sanal su bütçesi ve sulama kararı</description>
+  <maintainer email="ekip@example.com">Proje Ekibi</maintainer>
+  <license>MIT</license>
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>rospy</depend>
+  <depend>std_msgs</depend>
+  <depend>irrigation_msgs</depend>
+  <exec_depend>python3-yaml</exec_depend>
+  <test_depend>python3-pytest</test_depend>
+</package>

@@ -1,0 +1,20 @@
+<!-- MVP hedefi (Hafta 3-4): tüm sistem tek komutla. Hafta 1'de iskelet olarak çalışır. -->
+<launch>
+  <arg name="gazebo" default="false"/>
+  <arg name="rviz" default="true"/>
+
+  <include file="$(find irrigation_bringup)/launch/central.launch"/>
+
+  <include file="$(find irrigation_bringup)/launch/edge.launch"><arg name="parcel" value="parcel_1"/></include>
+  <include file="$(find irrigation_bringup)/launch/edge.launch"><arg name="parcel" value="parcel_2"/></include>
+  <include file="$(find irrigation_bringup)/launch/edge.launch"><arg name="parcel" value="parcel_3"/></include>
+  <include file="$(find irrigation_bringup)/launch/edge.launch"><arg name="parcel" value="parcel_4"/></include>
+
+  <!-- TODO(Hafta 2-3 - C): gazebo:=true iken field.launch + 4 x spawn_valve.launch -->
+
+  <group if="$(arg rviz)">
+    <node pkg="irrigation_viz" type="valve_viz_node.py" name="valve_viz_node"/>
+    <node pkg="tf2_ros" type="static_transform_publisher" name="world_tf" args="0 0 0 0 0 0 map world"/>
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find irrigation_viz)/rviz/digital_twin.rviz"/>
+  </group>
+</launch>

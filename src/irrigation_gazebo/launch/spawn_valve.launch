@@ -1,0 +1,21 @@
+<!-- Bir parsel vanasını kendi namespace'inde Gazebo'ya ekler ve kontrolcüsünü başlatır (Hafta 2). -->
+<launch>
+  <arg name="parcel" default="parcel_1"/>
+  <arg name="x" default="0"/>
+  <arg name="y" default="0"/>
+
+  <group ns="$(arg parcel)">
+    <param name="robot_description"
+           command="$(find xacro)/xacro $(find irrigation_description)/urdf/single_valve.urdf.xacro
+                    prefix:=$(arg parcel)_ namespace:=/$(arg parcel)"/>
+    <param name="tf_prefix" value=""/>
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_valve"
+          args="-urdf -param robot_description -model $(arg parcel)_valve -x $(arg x) -y $(arg y)"/>
+
+    <rosparam file="$(find irrigation_gazebo)/config/valve_controllers.yaml" command="load"/>
+    <param name="valve_position_controller/joint" value="$(arg parcel)_valve_joint"/>
+    <node pkg="controller_manager" type="spawner" name="controller_spawner"
+          args="joint_state_controller valve_position_controller"/>
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"/>
+  </group>
+</launch>

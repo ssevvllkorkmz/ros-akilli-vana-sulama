@@ -1,0 +1,5 @@
+<launch>
+  <node pkg="irrigation_weather" type="weather_node.py" name="weather_node" output="screen">
+    <rosparam file="$(find irrigation_weather)/config/weather.yaml" command="load"/>
+  </node>
+</launch>

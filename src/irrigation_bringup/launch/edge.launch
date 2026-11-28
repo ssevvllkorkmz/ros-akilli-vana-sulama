@@ -1,0 +1,8 @@
+<!-- Tek bir parsel uç düğümü. Dağıtık kullanımda uç makinede ROS_MASTER_URI ayarlanıp çalıştırılır. -->
+<launch>
+  <arg name="parcel" default="parcel_1"/>
+  <node ns="$(arg parcel)" pkg="valve_edge_node" type="edge_node.py" name="valve_edge_node" output="screen">
+    <param name="parcel_id" value="$(arg parcel)"/>
+    <param name="heartbeat_timeout_s" value="3.0"/>
+  </node>
+</launch>

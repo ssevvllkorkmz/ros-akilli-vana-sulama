@@ -1,0 +1,7 @@
+<!-- Merkezi düğümler (ROS Master makinesi) -->
+<launch>
+  <rosparam ns="irrigation" file="$(find irrigation_bringup)/config/parcels.yaml" command="load"/>
+  <include file="$(find irrigation_weather)/launch/weather.launch"/>
+  <node pkg="irrigation_decision" type="decision_node.py" name="decision_node" output="screen"/>
+  <node pkg="irrigation_scheduler" type="scheduler_node.py" name="scheduler_node" output="screen"/>
+</launch>
