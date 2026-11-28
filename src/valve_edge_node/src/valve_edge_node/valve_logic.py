@@ -1,6 +1,6 @@
 """Uç düğüm mantığı (ROS'tan bağımsız). Sorumlu: Kişi C (fail-safe: D).
 
-- Yalnızca 0/30/60/90° kabul edilir; diğerleri en yakın izinli açıya yuvarlanır mı, reddedilir mi? -> Hafta 2'de karar verin.
+- Yalnızca 0/30/60/90° kabul edilir; diğerleri reddedilir (ValueError). Gerekçe: docs/vana_modeli.md §3
 - Debi modeli (Hafta 3): flow = max_flow_lpm * f(angle)
 - Fail-safe (Hafta 4): son heartbeat'ten bu yana > timeout_s geçtiyse hedef açı = 0, mode = FAILSAFE
 """
@@ -14,6 +14,7 @@ def deg_to_rad(angle_deg):
 
 
 def validate_angle(angle_deg):
+    """İzinli açıysa float olarak döndürür, değilse ValueError."""
     # TODO(Hafta 2 - C)
     raise NotImplementedError
 
